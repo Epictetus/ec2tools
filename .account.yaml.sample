@@ -1,0 +1,6 @@
+key: EDIT_ME
+secret: EDIT_ME
+server: ec2.us-east-1.amazonaws.com
+#server: ec2.us-west-1.amazonaws.com
+#server: ec2.eu-west-1.amazonaws.com
+#server: ec2.ap-southeast-1.amazonaws.com
