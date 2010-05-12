@@ -1,0 +1,12 @@
+common procedures to control ec2 servers.
+
+= requires =
+sudo gem install amazon-ec2
+
+= tools =
+
+./image -i INSTANCE_ID -n IMAGE_NAME_PREFIX
+./image -k KEYPAIR_NAME -s SERVER_ORDER_NUM -n IMAGE_NAME_PREFIX 
+
+=> create AMI image as #{IMAGE_NAME_PREFIX}_20100501_190000
+
