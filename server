@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+require 'ec2tools'
+require 'optparse'
+
+ec2 = EC2.new
+options = {}
+opt = OptionParser.new do |opt|
+  opt.on('-k KEY') { |v| options[:key] = v }
+  opt.on('-n VAL') { |v| options[:num] = (v.to_i - 1) }
+  opt.parse!(ARGV)
+end
+instance = ec2.server(options)
+exec "ssh #{instance["dnsName"]}"

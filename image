@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+
+require 'ec2tools'
+require 'optparse'
+
+params = {}
+options = {
+  :name => 'default',
+  :no_reboot => true
+}
+ec2 = EC2.new
+OptionParser.new do |opt|
+  opt.on('-i INSTANCE_ID') { |v| options[:instance_id] = v }
+  opt.on('-s SERVER_NUM') { |v| params[:server] = v.to_i - 1 }
+  opt.on('-k KEY') { |v| params[:key] = v }
+  opt.on('-n NAME') { |v| options[:name] = v }
+  opt.on('--reboot') { |v| options[:no_reboot] = false }
+  opt.parse!(ARGV)
+end
+if params[:key] && params[:server]
+  options[:instance_id] = ec2.server(params)
+end
+options[:name] += '_' + Time.now.strftime("%Y%m%d_%H%M%S")
+
+ec2.create_image(options)
+
