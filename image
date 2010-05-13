@@ -18,7 +18,7 @@ OptionParser.new do |opt|
   opt.parse!(ARGV)
 end
 if params[:key] && params[:server]
-  options[:instance_id] = ec2.server(params)
+  options[:instance_id] = ec2.server(params).instanceId
 end
 options[:name] += '_' + Time.now.strftime("%Y%m%d_%H%M%S")
 
