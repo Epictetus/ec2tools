@@ -25,8 +25,10 @@ class EC2 < AWS::EC2::Base
     instances = describe_instances
     instances.reservationSet.item.each do |reservation|
       reservation.instancesSet.item.each do |instance|
-        @servers[instance.keyName.to_sym] = [] if @servers[instance.keyName].nil?
-        @servers[instance.keyName.to_sym] << instance
+        if instance.instanceState.name == "running"
+          @servers[instance.keyName.to_sym] = [] if @servers[instance.keyName.to_sym].nil?
+          @servers[instance.keyName.to_sym] << instance
+        end
       end
     end
   end
