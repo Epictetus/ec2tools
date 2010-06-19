@@ -23,3 +23,5 @@ sudo gem install amazon-ec2
 ./hostname -k KEYPAIR_NAME -p
 => list private dns names
 
+./hostname -k KEYPAIR -c
+=> list public dns names for config/deploy.rb

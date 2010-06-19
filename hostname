@@ -6,18 +6,24 @@ require 'optparse'
 ec2 = EC2.new
 options = {}
 @private = false
+@deploy_conf_mode = false
 opt = OptionParser.new do |opt|
   opt.on('-k KEY') { |v| options[:key] = v }
   opt.on('-s VAL') { |v| options[:num] = (v.to_i - 1) }
   opt.on('-p')     { |v| @private = true }
+  opt.on('-c')     { |v| @deploy_conf_mode = true }
   opt.parse!(ARGV)
 end
-
-ec2.servers(options).each do |instance|
-  if @private
-    puts instance["privateDnsName"]
-  else
-    puts instance["dnsName"]
+if @deploy_conf_mode
+  puts(ec2.servers(options).map do |instance|
+    '"' + instance["dnsName"] + '"'
+  end.join(",\n"))
+else
+  ec2.servers(options).each do |instance|
+    if @private
+      puts instance["privateDnsName"]
+    else
+      puts instance["dnsName"]
+    end
   end
 end
-
