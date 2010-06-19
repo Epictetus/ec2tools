@@ -33,9 +33,17 @@ class EC2 < AWS::EC2::Base
     end
   end
   
-  def server(options = {})
+  def servers(options = {})
     key = options[:key].to_sym
-    num = options[:num].to_i
-    @servers[key][num]
+    if options[:num]
+      num = options[:num].to_i
+      [@servers[key][num]]
+    else
+      @servers[key]
+    end
+  end
+  
+  def server(options = {})
+    servers(options).first
   end
 end

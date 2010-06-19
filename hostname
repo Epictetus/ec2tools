@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+require 'ec2tools'
+require 'optparse'
+
+ec2 = EC2.new
+options = {}
+@private = false
+opt = OptionParser.new do |opt|
+  opt.on('-k KEY') { |v| options[:key] = v }
+  opt.on('-s VAL') { |v| options[:num] = (v.to_i - 1) }
+  opt.on('-p')     { |v| @private = true }
+  opt.parse!(ARGV)
+end
+
+ec2.servers(options).each do |instance|
+  if @private
+    puts instance["privateDnsName"]
+  else
+    puts instance["dnsName"]
+  end
+end
+
