@@ -1,5 +1,8 @@
 common procedures to control ec2 servers.
 
+SERVER_ORDER is 1-origin number
+
+
 = requires =
 sudo gem install amazon-ec2
 
@@ -7,6 +10,16 @@ sudo gem install amazon-ec2
 
 ./image -i INSTANCE_ID -n IMAGE_NAME_PREFIX
 ./image -k KEYPAIR_NAME -s SERVER_ORDER_NUM -n IMAGE_NAME_PREFIX 
-
 => create AMI image as #{IMAGE_NAME_PREFIX}_20100501_190000
+
+
+./server -k KEYPAIR_NAME -s SERVER_ORDER_NUM
+=> login server
+
+
+./hostname -k KEYPAIR_NAME (-s SERVER_ORDER_NUM)
+=> list public dns names
+
+./hostname -k KEYPAIR_NAME -p
+=> list private dns names
 
