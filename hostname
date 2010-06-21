@@ -7,6 +7,7 @@ ec2 = EC2.new
 options = {}
 @private = false
 @deploy_conf_mode = false
+@mode = :public
 opt = OptionParser.new do |opt|
   opt.on('-k KEY') { |v| options[:key] = v }
   opt.on('-s VAL') { |v| options[:num] = (v.to_i - 1) }
@@ -30,7 +31,9 @@ hostnames = ec2.servers(options).map do |instance|
 end
 
 if @deploy_conf_mode
-  puts '"' + hostnames.join("\"\n") + '"'
+  puts hostnames.map{|x|
+    '"' + x + '"'
+  }.join(",\n")
 else
   hostnames.each do |hostname|
     puts hostname
