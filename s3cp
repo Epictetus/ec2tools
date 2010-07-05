@@ -16,6 +16,7 @@ if mode == :s2l
   
 else
   hoge, bucket, base_dir = dist_file.match(/s3:\/(.+?)\/(.+)/).to_a
+  base_dir = base_dir[0, base_dir.length - 1] if base_dir[-1, 1] == '/'
   from_files.each do |file|
     basename = File.basename(file)
     target = "#{base_dir}/#{basename}"
