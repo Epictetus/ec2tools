@@ -55,6 +55,10 @@ class EC2 < AWS::EC2::Base
   
   def self.s3
     config = load_account
-    AWS::S3::Base.establish_connection!(config)
+    s3_config = {
+      :access_key_id => config[:access_key_id],
+      :secret_access_key => config[:secret_access_key]
+    }
+    AWS::S3::Base.establish_connection!(s3_config)
   end
 end

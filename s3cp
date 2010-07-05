@@ -19,10 +19,10 @@ else
   from_files.each do |file|
     basename = File.basename(file)
     target = "#{base_dir}/#{basename}"
-    #    print "upload #{file} -> s3:/#{backet}/#{target_filename} ... "
+    print "upload #{file} -> s3:/#{bucket}/#{target} ... "
     STDOUT.flush
     print AWS::S3::S3Object.store(target, open(file), bucket)
-    #   print "done.\n"
+    print "done.\n"
     STDOUT.flush
   end
 end
