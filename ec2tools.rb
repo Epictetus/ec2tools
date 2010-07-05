@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'AWS'
+require 'aws/s3'
 require 'yaml'
 
 class EC2 < AWS::EC2::Base
@@ -7,17 +8,22 @@ class EC2 < AWS::EC2::Base
   SERVERS_YAML = '.servers.yaml'
   
   def initialize
-    super(load_account)
+    super(self.class.load_account)
     update_servers
   end
   
-  def load_account
+  def self.load_account
+    return @config if @config
     file = '.account.yaml'
     if File.exists?(ACCOUNT_YAML)
       config = YAML.load_file(ACCOUNT_YAML)
     end
     raise if config.nil?
-    {:access_key_id => config["key"], :secret_access_key => config["secret"], :server => config["server"]}
+    @config = {
+      :access_key_id => config["key"],
+      :secret_access_key => config["secret"],
+      :server => config["server"]
+    }
   end
   
   def update_servers
@@ -45,5 +51,10 @@ class EC2 < AWS::EC2::Base
   
   def server(options = {})
     servers(options).first
+  end
+  
+  def self.s3
+    config = load_account
+    AWS::S3::Base.establish_connection!(config)
   end
 end
