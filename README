@@ -25,3 +25,8 @@ sudo gem install amazon-ec2
 
 ./hostname -k KEYPAIR -c
 => list public dns names for config/deploy.rb
+
+
+./munin_formatter -k KEY1,KEY2,KEY3...
+=> dump partial string of munin.conf
+ -p use private ip address

@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+
+require 'ec2tools'
+require 'optparse'
+
+ec2 = EC2.new
+options = {}
+opt = OptionParser.new do |opt|
+  opt.on('-k KEY') { |v| options[:key] = v}
+  opt.on('-p') { |v| options[:private] = true }
+  opt.parse!(ARGV)
+end
+
+keys = options[:key].split(',')
+keys.each do |key|
+  ec2.servers({:key => key.strip}).each_with_index do |server, idx|
+    puts sprintf("[%03d.#{key}]", idx + 1)
+    if options[:private]
+      puts "    address #{server["privateDnsName"]}"
+    else
+      puts "    address #{server["dnsName"]}"
+    end
+    puts "    use_node_name yes"
+    puts ""
+  end
+end
