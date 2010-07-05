@@ -1,0 +1,28 @@
+#!/usr/bin/ruby
+
+require 'ec2tools'
+
+s3 = EC2.s3
+from_files = []
+mode = :s2l
+
+dist_file = ARGV.pop
+if dist_file.match /^s3:/
+  mode = :l2s
+end
+
+from_files = ARGV
+if mode == :s2l
+  
+else
+  hoge, bucket, base_dir = dist_file.match(/s3:\/(.+?)\/(.+)/).to_a
+  from_files.each do |file|
+    basename = File.basename(file)
+    target = "#{base_dir}/#{basename}"
+    #    print "upload #{file} -> s3:/#{backet}/#{target_filename} ... "
+    STDOUT.flush
+    print AWS::S3::S3Object.store(target, open(file), bucket)
+    #   print "done.\n"
+    STDOUT.flush
+  end
+end
